@@ -1,60 +1,86 @@
 const Todo = require('../models/todos')
 
-async function getTodos(req, res){
+async function getTodos(req, res) {
     const todos = await Todo.get()
-    if(!todos){
+    if (!todos) {
         res.json({
-            status : 404,
-            body : "not found"
+            status: 404,
+            body: "not found"
         })
     }
     res.json(todos)
 }
 
-async function postTodos(req, res){
-     if(!req.body) {
-        res.sendStatus(400).send({message : "body is empty"})
+async function postTodos(req, res) {
+    if (!req.body) {
+        res.sendStatus(400).send({message: "body is empty"})
     }
 
-   const addTodo = Todo.add(req.body)
+    const addTodo = Todo.add(req.body)
 
-    if(addTodo){
-      res.json({
-          status : 201,
-          body : "ok"
-      })
+    if (addTodo) {
+        res.json({
+            status: 201,
+            body: "ok"
+        })
     }
 }
 
-async function updateTodo(req, res){
+async function updateTodo(req, res) {
     const updateTodo = await Todo.update(req.query.id, req.body.title)
 
-    if(!updateTodo){
+    if (!updateTodo) {
         res.json({
-            status : 404,
-            body : "not found"
+            status: 404,
+            body: "not found"
+        })
+    } else {
+        res.json({
+            status: 200,
+            body: "ok"
         })
     }
-
-    res.json({
-        status : 200,
-        body : "ok"
-    })
 }
 
-async function deleteTodo(req, res){
+
+async function completeTodo(req, res) {
+    const todo = await Todo.find(req.query.id)
+    // console.log(todo); return
+    if (!todo) {
+        res.json({
+            status: 404,
+            body: "not found"
+        })
+    }
+    const result = await Todo.complete(todo.id, todo.completed)
+
+    if (!result) {
+        res.json({
+            status: 400,
+            body: "failed"
+        })
+    } else {
+        res.json({
+            status: 200,
+            body: "ok"
+        })
+    }
+
+}
+
+async function deleteTodo(req, res) {
     const deleteTodo = await Todo.remove(req.query.id)
 
-    if(!deleteTodo){
+    if (!deleteTodo) {
         res.json({
-            status : 404,
-            body : "not found"
+            status: 404,
+            body: "not found"
         })
     }
 
     res.json({
-        status : 200,
-        body : "ok"
+        status: 200,
+        body: "ok"
     })
 }
 
@@ -62,5 +88,6 @@ module.exports = {
     getTodos,
     postTodos,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    completeTodo
 }

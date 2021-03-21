@@ -5,7 +5,7 @@ async function get(){
 }
 
 async function find(id){
-    return db('todos').where({id : id}).select('*')
+    return db('todos').where({id : id}).select('*').first()
 }
 
 async function add(todo){
@@ -24,10 +24,17 @@ async function remove(id){
     return db('todos').where({id : id}).delete()
 }
 
+async function complete(id, completed){
+    return db('todos').where({id : id}).update({
+        completed : !completed
+    })
+}
+
 module.exports = {
     get,
     find,
     add,
     update,
+    complete,
     remove
 }

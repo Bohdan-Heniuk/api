@@ -5,7 +5,8 @@ router.use(express.json())
 
 router.get('/todos', todosController.getTodos)
 router.post('/todos', todosController.postTodos)
-router.patch('/todos', todosController.updateTodo)
+router.patch('/todos/update', todosController.updateTodo)
+router.get('/todos/complete', todosController.completeTodo)
 router.delete('/todos', todosController.deleteTodo)
 
 module.exports = router
