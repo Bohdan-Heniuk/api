@@ -1,9 +1,9 @@
 const Todo = require('../models/todos')
 
 async function getTodos(req, res) {
-
     if (req.query.id) {
         const todo = await Todo.find(req.query.id)
+        console.log(todo);
         if (!todo) {
             res.json({
                 status: 404,
@@ -106,5 +106,4 @@ module.exports = {
     updateTodo,
     deleteTodo,
     completeTodo,
-    getTodo
 }
