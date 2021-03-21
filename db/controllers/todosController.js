@@ -11,6 +11,17 @@ async function getTodos(req, res) {
     res.json(todos)
 }
 
+async function getTodo(req, res) {
+    const todo = await Todo.find(req.query.id)
+    if (!todo) {
+        res.json({
+            status: 404,
+            body: "not found"
+        })
+    }
+    res.json(todo)
+}
+
 async function postTodos(req, res) {
     if (!req.body) {
         res.sendStatus(400).send({message: "body is empty"})
@@ -45,7 +56,6 @@ async function updateTodo(req, res) {
 
 async function completeTodo(req, res) {
     const todo = await Todo.find(req.query.id)
-    // console.log(todo); return
     if (!todo) {
         res.json({
             status: 404,
@@ -89,5 +99,6 @@ module.exports = {
     postTodos,
     updateTodo,
     deleteTodo,
-    completeTodo
+    completeTodo,
+    getTodo
 }
