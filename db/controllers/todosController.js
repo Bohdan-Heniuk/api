@@ -1,25 +1,31 @@
 const Todo = require('../models/todos')
 
 async function getTodos(req, res) {
-    const todos = await Todo.get()
-    if (!todos) {
-        res.json({
-            status: 404,
-            body: "not found"
-        })
-    }
-    res.json(todos)
-}
 
-async function getTodo(req, res) {
-    const todo = await Todo.find(req.query.id)
-    if (!todo) {
-        res.json({
-            status: 404,
-            body: "not found"
-        })
+    if (req.query.id) {
+        const todo = await Todo.find(req.query.id)
+        if (!todo) {
+            res.json({
+                status: 404,
+                body: "not found"
+            })
+        } else {
+            res.json(todo)
+        }
     }
-    res.json(todo)
+
+    else {
+        const todos = await Todo.get()
+        if (!todos) {
+            res.json({
+                status: 404,
+                body: "not found"
+            })
+        }
+        res.json(todos)
+    }
+
+
 }
 
 async function postTodos(req, res) {
